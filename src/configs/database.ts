@@ -1,4 +1,4 @@
-import pkg from 'prisma'
+import pkg from '@prisma/client'
 import chalk from 'chalk';
 
 
