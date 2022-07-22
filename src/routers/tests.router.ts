@@ -1,12 +1,15 @@
-import {Router} from 'express'
-import { findAllTestsGET, testPOST } from '../controllers/tests.controller.js'
+import { Router } from 'express'
+import {
+	findAllTestsByDisciplieGET,
+	findAllTestsByTeacherGET,
+	testPOST,
+} from '../controllers/tests.controller.js'
 import { validateSchema } from '../middlewares/validateSchema.js'
 import { validateToken } from '../middlewares/validateToken.js'
 import { testsSchema } from '../schemas/tests.schema.js'
 
-
-
 const testsRouter = Router()
-testsRouter.post('/tests',validateSchema(testsSchema),validateToken,testPOST)
-testsRouter.get('/tests',findAllTestsGET)
+testsRouter.post('/tests', validateSchema(testsSchema), validateToken, testPOST)
+testsRouter.get('/tests/disciplines', findAllTestsByDisciplieGET)
+testsRouter.get('/tests/teachers', findAllTestsByTeacherGET)
 export default testsRouter
