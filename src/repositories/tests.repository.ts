@@ -2,63 +2,56 @@ import { prisma } from "../configs/database.js"
 
 
 
-async function insert(name:string,pdfUrl:string,category:string,teacher:string,discipline:string) {
-    const teacherId = await findTeacherIDbyName(teacher)
-    const categoryId = await findCategoryIDbyName(category)
-    const disciplineId = await findDisciplinesByName(discipline)
-    const teacherDisciplineId = await findteacherDisciplineId(teacherId,disciplineId)
+async function insert(name:string,pdfUrl:string,categoryId:number,teacherDisciplineId:number) {
+    
     
     const result = await prisma.tests.create({data:{name,pdfUrl,categoryId,teacherDisciplineId}})
+    return result
 }
 
 async function findTeacherIDbyName(name:string) {
     const teacher = await prisma.teachers.findUnique({where:{name}})
-    if(!teacher){
-        throw{
-            status:404,
-            message:`Teacher don't registered`
-        }
-    }
-    
-    return teacher.id
+    return teacher
 }
 
 async function findCategoryIDbyName(name:string) {
     const category = await prisma.categories.findUnique({where:{name}})
-    if(!category){
-        throw{
-            status:404,
-            message:`category don't registered`
-        }
-    }
-    return category.id
+    return category
 }
 async function findDisciplinesByName(name:string) {
     //VERIFICAR A PARTE DE DISCIPLINE NO POST
     const discipline = await prisma.disciplines.findUnique({where:{name}}) 
-    if(!discipline){
-        throw{
-            status:404,
-            message:`discipline don't registered`
-        }
-    }
-    return discipline.id   
+    return discipline  
 }
 
 async function  findteacherDisciplineId(teacherId:number,disciplineId:number) {
     const result = await prisma.teachersDisciplines.findMany({where:{teacherId,disciplineId}})
-    console.log(result)
-    if(result.length < 1 ){
-        throw{
-            status:404,
-            message:`Match teacher|discipline don't found`
+    return result
+}
+
+async function findAllTestsGroupByDisciplines() {
+    const result = await prisma.tests.findMany({
+        where:{},
+        include:{
+            categories:true,
+            teachersDisciplines:{
+                include:{teachers:true,disciplines:true}
+            },
         }
-    }
-    return result[0].id
+        
+    })
+    
+
+    return result
 }
 
 const testRepository = {
-    insert
+    insert, 
+    findCategoryIDbyName,
+    findDisciplinesByName,
+    findTeacherIDbyName,
+    findteacherDisciplineId,
+    findAllTestsGroupByDisciplines
 }
 
 

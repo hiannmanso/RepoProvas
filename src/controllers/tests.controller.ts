@@ -1,12 +1,22 @@
 import { Request, Response } from "express";
 import { test } from "../interfaces/tests.interface.js";
-import { insertNewTest } from "../services/test.service.js";
+import { getTestsByDiscipline, insertNewTest } from "../services/test.service.js";
 
 
 export async function testPOST(req:Request,res:Response) {
-    //VER COMO PEGA AS INFOS DO LOCALS
+    const {token} = res.locals
     const {name,pdfUrl,category,teacher,discipline}:test= req.body
 
-    const result = await insertNewTest(name,pdfUrl,category,teacher,discipline)
+    await insertNewTest(name,pdfUrl,category,teacher,discipline)
     res.status(201).send(`Test have been add.`)
 }
+
+export async function findAllTestsGET(req:Request,res:Response) {
+    const result =await getTestsByDiscipline()
+
+
+
+    res.status(200).send(result)
+}
+
+
