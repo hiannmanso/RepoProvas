@@ -10,6 +10,6 @@ import { testsSchema } from '../schemas/tests.schema.js'
 
 const testsRouter = Router()
 testsRouter.post('/tests', validateSchema(testsSchema), validateToken, testPOST)
-testsRouter.get('/tests/disciplines', findAllTestsByDisciplieGET)
-testsRouter.get('/tests/teachers', findAllTestsByTeacherGET)
+testsRouter.get('/tests/disciplines', validateToken, findAllTestsByDisciplieGET)
+testsRouter.get('/tests/teachers', validateToken, findAllTestsByTeacherGET)
 export default testsRouter

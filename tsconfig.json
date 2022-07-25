@@ -10,3 +10,9 @@
 		"esm": true
 	}
 }
+
+// PARA UASR O CHALK
+// moduleNameMapper: {
+// 	"^(\\.{1,2}/.*)\\.js$": "$1",
+// 	"#(.*)": "<rootDir>/node_modules/$1"
+// }
