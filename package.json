@@ -6,7 +6,7 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"start": "node ./outDir/src/server.ts",
+		"start": "node ./dist/src/server.ts",
 		"test": "dotenv -e .env.test prisma migrate reset && dotenv -e .env.test cross-env jest --runInBandjest --detectOpenHandles -i",
 		"dev": "nodemon -r dotenv/config src/server.ts"
 	},
